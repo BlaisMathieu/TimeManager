@@ -21,9 +21,20 @@ defmodule TimemanagerapiWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TimemanagerapiWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", TimemanagerapiWeb do
+    resources("/users", UserController, except: [:new, :edit])
+    scope "/clocks", ClockController do
+      get "/:userID", ClockController, :userID
+      post "/:userID", ClockController, :userID
+    end
+    resources "/workingtimes", WorkingtimeController, except: [:new, :edit] do
+      # get "/:userID", ClockController, :userID
+    end
+    scope "/workingtimes", WorkingtimeController do
+      get "/:userID", ClockController, :userID
+    end
+    pipe_through :api
+  end
 
   # Enables LiveDashboard only for development
   #

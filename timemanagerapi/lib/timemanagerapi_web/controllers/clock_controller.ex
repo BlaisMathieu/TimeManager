@@ -1,4 +1,4 @@
-defmodule TimemanagerapiWeb.ClockController do
+defmodule TimemanagerapiWeb.ClockController.ClockController do
   use TimemanagerapiWeb, :controller
 
   alias Timemanagerapi.Clocks
@@ -6,18 +6,10 @@ defmodule TimemanagerapiWeb.ClockController do
 
   action_fallback TimemanagerapiWeb.FallbackController
 
-  def index(conn, _params) do
-    clocks = Clocks.list_clocks()
-    render(conn, "index.json", clocks: clocks)
-  end
+  def userID(conn, %{"userID" => id}) do
+    clocks = Clocks.get_clocks!(id)
 
-  def create(conn, %{"clock" => clock_params}) do
-    with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-      |> render("show.json", clock: clock)
-    end
+    render(conn, "index.json", clocks: clocks)
   end
 
   def show(conn, %{"id" => id}) do
@@ -25,19 +17,13 @@ defmodule TimemanagerapiWeb.ClockController do
     render(conn, "show.json", clock: clock)
   end
 
-  def update(conn, %{"id" => id, "clock" => clock_params}) do
-    clock = Clocks.get_clock!(id)
-
-    with {:ok, %Clock{} = clock} <- Clocks.update_clock(clock, clock_params) do
-      render(conn, "show.json", clock: clock)
+  def userID_post(conn, %{"userID" => user_id, "clock" => clock_params}) do
+    with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params, user_id) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
+      |> render("show.json", clock: clock)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    clock = Clocks.get_clock!(id)
-
-    with {:ok, %Clock{}} <- Clocks.delete_clock(clock) do
-      send_resp(conn, :no_content, "")
-    end
-  end
 end

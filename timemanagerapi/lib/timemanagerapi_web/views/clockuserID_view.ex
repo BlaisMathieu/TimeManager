@@ -1,4 +1,4 @@
-defmodule TimemanagerapiWeb.ClockView do
+defmodule TimemanagerapiWeb.ClockController.ClockView do
   use TimemanagerapiWeb, :view
   alias TimemanagerapiWeb.ClockView
 
@@ -6,7 +6,7 @@ defmodule TimemanagerapiWeb.ClockView do
     %{data: render_many(clocks, ClockView, "clock.json")}
   end
 
-  def render("show.json", %{clock: clock}, a, b) do
+  def render("show.json", %{clock: clock}) do
     %{data: render_one(clock, ClockView, "clock.json")}
   end
 

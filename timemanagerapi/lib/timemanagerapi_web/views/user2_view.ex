@@ -1,4 +1,4 @@
-defmodule TimemanagerapiWeb.UserView do
+defmodule TimemanagerapiWeb.UserController.UserView do
   use TimemanagerapiWeb, :view
   alias TimemanagerapiWeb.UserView
 

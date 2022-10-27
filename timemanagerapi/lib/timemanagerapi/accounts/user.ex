@@ -3,15 +3,16 @@ defmodule Timemanagerapi.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :firstName, :string
-    field :lastName, :string
-    # has_many :tasks, Timemanagerapi.Tasks.Task
+    field :username, :string
+    field :email, :string
+    has_many :clocks, Timemanagerapi.Clocks.Clock
+    has_many :workingtimes, Timemanagerapi.WorkingTimes.Workingtime
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:firstName, :lastName])
-    |> validate_required([:firstName, :lastName])
+    |> cast(attrs, [:username, :email])
+    |> validate_required([:username, :email])
   end
 end

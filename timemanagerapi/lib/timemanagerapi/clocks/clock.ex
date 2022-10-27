@@ -9,9 +9,10 @@ defmodule Timemanagerapi.Clocks.Clock do
   end
 
   @doc false
-  def changeset(clock, attrs) do
+  def changeset(clock, attrs, user_id) do
     clock
-    |> cast(attrs, [:time, :status, :user_id])
-    |> validate_required([:time, :status, :user_id])
+    |> cast(attrs, [:time, :status])
+    |> cast(%{user_id: user_id}, [:user_id])
+    |> validate_required([:time, :status])
   end
 end

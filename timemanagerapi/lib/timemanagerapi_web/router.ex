@@ -22,23 +22,23 @@ defmodule TimemanagerapiWeb.Router do
 
   # Other scopes may use custom stacks.
   scope "/api", TimemanagerapiWeb do
-    resources("/users", UserController, only: [:index, :create])
+    resources("/users", UserController, only: [:index, :create, :show])
     scope "/users", UserController do
       get "/:userID", UserController, :userID
-      put "/:userID", UserController, :userID
-      delete "/:userID", UserController, :userID
+      put "/:userID", UserController, :userID_put
+      delete "/:userID", UserController, :userID_delete
     end
-    scope "/clocks", ClockController do
+    scope "/clocks", ClockController, only: [:show] do
       get "/:userID", ClockController, :userID
-      post "/:userID", ClockController, :userID
+      post "/:userID", ClockController, :userID_post
     end
     resources "/workingtimes", WorkingtimeController, only: [:update, :delete] do
     end
     scope "/workingtimes", WorkingtimeController do
-      get "/:userID", ClockController, :userID
-      post "/:userID", ClockController, :userID
-      scope "/userID", ClockController do
-        get "/:id", ClockController, :id
+      get "/:userID", WorkingtimeController, :userID
+      post "/:userID", WorkingtimeController, :userID_post
+      scope "/:userID", WorkingtimeController do
+        get "/:id", WorkingtimeController, :id
       end
     end
     pipe_through :api
